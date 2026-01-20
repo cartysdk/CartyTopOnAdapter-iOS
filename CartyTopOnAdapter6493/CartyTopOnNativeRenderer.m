@@ -22,7 +22,8 @@
 
 - (UIView *)getNetWorkMediaView
 {
-    CTNativeAd *nativeAd = self.offer.assets[kATAdAssetsCustomObjectKey];
+    ATNativeADCache *offer = (ATNativeADCache *)self.ADView.nativeAd;
+    CTNativeAd *nativeAd = offer.assets[kATAdAssetsCustomObjectKey];
     UIView *videoAdView = nativeAd.mediaView;
     videoAdView.frame = CGRectMake(0, 0, self.configuration.mediaViewFrame.size.width, self.configuration.mediaViewFrame.size.height);
     return videoAdView;
