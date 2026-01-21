@@ -1,3 +1,3 @@
-# CartyAdmobAdapter
+# CartyTopOnAdapter
 
-Enables you to serve CartySDK in your iOS application using Topon mediation network
+Enables you to serve CartySDK in your iOS application using TopOn mediation network
