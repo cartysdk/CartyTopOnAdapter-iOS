@@ -19,6 +19,7 @@
         };
         [[CartyADSDK sharedInstance] setCOPPAStatus:[ATAppSettingManager sharedManager].complyWithCOPPA];
         [[CartyADSDK sharedInstance] setDoNotSell:![ATAppSettingManager sharedManager].complyWithCCPA];
+        [CartyADSDK sharedInstance].mediation = @"TopOn";
         [[CartyADSDK sharedInstance] start:appid completion:^{
             
         }];
