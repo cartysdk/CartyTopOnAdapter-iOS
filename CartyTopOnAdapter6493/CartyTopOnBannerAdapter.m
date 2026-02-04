@@ -38,17 +38,50 @@
         self.bannerAd = [[CTBannerAd alloc] init];
         self.bannerAd.placementid = pid;
         self.bannerAd.delegate = self.bannerEvent;
-        ATUnitGroupModel *unitGroupModel = serverInfo[kATAdapterCustomInfoUnitGroupModelKey];
-        CGRect rect = CGRectZero;
-        rect.size = unitGroupModel.adSize;
-        self.bannerAd.frame = rect;
+        NSString *bannerSize = serverInfo[@"bannerSize"];
+        if([bannerSize isKindOfClass:[NSString class]])
+        {
+            if([bannerSize isEqualToString:@"320x50"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType320x50;
+                self.bannerAd.frame = CGRectMake(0, 0, 320, 50);
+            }
+            else if([bannerSize isEqualToString:@"320x100"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType320x100;
+                self.bannerAd.frame = CGRectMake(0, 0, 320, 100);
+            }
+            else if([bannerSize isEqualToString:@"300x250"])
+            {
+                self.bannerAd.bannerSize = CTBannerSizeType300x250;
+                self.bannerAd.frame = CGRectMake(0, 0, 300, 250);
+            }
+        }
         if([localInfo valueForKey:@"Carty_isMute"])
         {
             self.bannerAd.isMute = [localInfo[@"Carty_isMute"] boolValue];
         }
         if([localInfo valueForKey:@"Carty_BannerSize"])
         {
-            self.bannerAd.bannerSize = [localInfo[@"Carty_BannerSize"] integerValue];
+            NSString *bannerSize = localInfo[@"Carty_BannerSize"];
+            if([bannerSize isKindOfClass:[NSString class]])
+            {
+                if([bannerSize isEqualToString:@"320x50"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType320x50;
+                    self.bannerAd.frame = CGRectMake(0, 0, 320, 50);
+                }
+                else if([bannerSize isEqualToString:@"320x100"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType320x100;
+                    self.bannerAd.frame = CGRectMake(0, 0, 320, 100);
+                }
+                else if([bannerSize isEqualToString:@"300x250"])
+                {
+                    self.bannerAd.bannerSize = CTBannerSizeType300x250;
+                    self.bannerAd.frame = CGRectMake(0, 0, 300, 250);
+                }
+            }
         }
         [self.bannerAd loadAd];
     });
