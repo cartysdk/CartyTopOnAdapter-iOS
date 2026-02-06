@@ -33,6 +33,6 @@
 
 - (void)CTNativeAdDidClick:(nonnull CTNativeAd *)ad
 {
-    [self trackClick];
+    [self trackNativeAdClick];
 }
 @end
