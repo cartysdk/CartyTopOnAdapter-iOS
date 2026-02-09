@@ -58,6 +58,7 @@
 
 - (void)CTRewardedVideoAdDidShow:(nonnull CTRewardedVideoAd *)ad
 {
+    [self.adStatusBridge atOnAdVideoStart:nil];
     [self.adStatusBridge atOnAdShow:nil];
 }
 
@@ -73,6 +74,7 @@
 
 - (void)CTRewardedVideoAdDidDismiss:(nonnull CTRewardedVideoAd *)ad
 {
+    [self.adStatusBridge atOnAdVideoEnd:nil];
     [self.adStatusBridge atOnAdClosed:nil];
 }
 
