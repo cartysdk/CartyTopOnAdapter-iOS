@@ -6,13 +6,22 @@
 - (void)CTNativeAdDidLoad:(nonnull CTNativeAd *)ad
 {
     NSMutableDictionary *asset = [[NSMutableDictionary alloc] init];
-    asset[kATAdAssetsCustomObjectKey] = ad;
-    asset[kATNativeADAssetsMainTitleKey] = ad.title;
-    asset[kATNativeADAssetsMainTextKey] = ad.desc;
-    asset[kATNativeADAssetsCTATextKey] = ad.ctaText;
-    asset[kATNativeADAssetsIconURLKey] = ad.iconImageURL;
-    asset[kATNativeADAssetsLogoSetKey] = @{@"adChoiceView":ad.adChoiceView};
-    asset[kATAdAssetsCustomEventKey] = self;
+    if(ad.isTemplate)
+    {
+        asset[kATNativeADAssetsIsExpressAdKey] = @(YES);
+        asset[kATAdAssetsCustomObjectKey] = ad;
+        asset[kATAdAssetsCustomEventKey] = self;
+    }
+    else
+    {
+        asset[kATAdAssetsCustomObjectKey] = ad;
+        asset[kATNativeADAssetsMainTitleKey] = ad.title;
+        asset[kATNativeADAssetsMainTextKey] = ad.desc;
+        asset[kATNativeADAssetsCTATextKey] = ad.ctaText;
+        asset[kATNativeADAssetsIconURLKey] = ad.iconImageURL;
+        asset[kATNativeADAssetsLogoSetKey] = @{@"adChoiceView":ad.adChoiceView};
+        asset[kATAdAssetsCustomEventKey] = self;
+    }
     [self trackNativeAdLoaded:@[asset]];
 }
 

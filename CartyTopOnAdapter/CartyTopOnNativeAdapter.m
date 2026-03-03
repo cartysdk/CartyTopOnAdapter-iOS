@@ -35,13 +35,21 @@
 {
     CartyTopOnNativeObject *nativeObject = [[CartyTopOnNativeObject alloc] init];
     nativeObject.nativeAd = ad;
-    nativeObject.nativeAdRenderType = ATNativeAdRenderSelfRender;
-    nativeObject.title = ad.title;
-    nativeObject.mainText = ad.desc;
-    nativeObject.iconUrl = ad.iconImageURL;
-    nativeObject.ctaText = ad.ctaText;
-    nativeObject.logoView = ad.adChoiceView;
-    nativeObject.mediaView = ad.mediaView;
+    if(ad.isTemplate)
+    {
+        nativeObject.nativeAdRenderType = ATNativeAdRenderExpress;
+        nativeObject.templateView = ad.templateView;
+    }
+    else
+    {
+        nativeObject.nativeAdRenderType = ATNativeAdRenderSelfRender;
+        nativeObject.title = ad.title;
+        nativeObject.mainText = ad.desc;
+        nativeObject.iconUrl = ad.iconImageURL;
+        nativeObject.ctaText = ad.ctaText;
+        nativeObject.logoView = ad.adChoiceView;
+        nativeObject.mediaView = ad.mediaView;
+    }
     [self.adStatusBridge atOnNativeAdLoadedArray:@[nativeObject] adExtra:nil];
 }
 

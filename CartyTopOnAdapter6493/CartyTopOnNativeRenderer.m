@@ -17,7 +17,16 @@
     customEvent.adView = self.ADView;
     self.ADView.customEvent = customEvent;
     CTNativeAd *nativeAd = offer.assets[kATAdAssetsCustomObjectKey];
-    [nativeAd registerContainer:self.ADView withClickableViews:[self.ADView clickableViews]];
+    if(nativeAd.isTemplate)
+    {
+        nativeAd.templateView.frame = self.ADView.bounds;
+        [self.ADView addSubview:nativeAd.templateView];
+        [nativeAd registerContainer:nativeAd.templateView withClickableViews:nil];
+    }
+    else
+    {
+        [nativeAd registerContainer:self.ADView withClickableViews:[self.ADView clickableViews]];
+    }
 }
 
 - (UIView *)getNetWorkMediaView
