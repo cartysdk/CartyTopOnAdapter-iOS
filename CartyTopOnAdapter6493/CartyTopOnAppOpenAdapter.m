@@ -13,6 +13,38 @@
 
 @implementation CartyTopOnAppOpenAdapter
 
+#pragma mark - c2s
++ (void)bidRequestWithPlacementModel:(ATPlacementModel *)placementModel unitGroupModel:(ATUnitGroupModel *)unitGroupModel info:(NSDictionary *)info completion:(void(^)(ATBidInfo *bidInfo, NSError *error))completion
+{
+    NSString *appid = info[@"appid"];
+    [CartyTopOnAdapter startWithAppID:appid];
+    NSString *pid = info[@"slot_id"];
+    if(pid == nil)
+    {
+        if(completion)
+        {
+            NSError *error = [NSError errorWithDomain:@"CartyTopOnAdapter" code:400 userInfo:@{NSLocalizedDescriptionKey:@"not pid"}];
+            completion(nil,error);
+        }
+        return;
+    }
+    CartyTopOnAppOpenEvent *cartyTopOnAppOpenEvent = [[CartyTopOnAppOpenEvent alloc] initWithInfo:info localInfo:info];
+    CTAppOpenAd *appOpenAd = [[CTAppOpenAd alloc] init];
+    appOpenAd.placementid = pid;
+    appOpenAd.delegate = cartyTopOnAppOpenEvent;
+    
+    cartyTopOnAppOpenEvent.isC2SBiding = YES;
+    cartyTopOnAppOpenEvent.bidCompletion = completion;
+    cartyTopOnAppOpenEvent.bidInfo =  [ATBidInfo bidInfoC2SWithPlacementID:placementModel.placementID unitGroupUnitID:unitGroupModel.unitID adapterClassString:unitGroupModel.adapterClassString price:@"0" currencyType:ATBiddingCurrencyTypeUS expirationInterval:unitGroupModel.bidTokenTime customObject:appOpenAd];
+    
+    if([info valueForKey:@"Carty_isMute"])
+    {
+        appOpenAd.isMute = [info[@"Carty_isMute"] boolValue];
+    }
+    [appOpenAd loadAd];
+    [[CartyTopOnC2SManager sharedInstance] addEvent:cartyTopOnAppOpenEvent placementid:pid];
+}
+
 - (nonnull instancetype)initWithNetworkCustomInfo:(nonnull NSDictionary *)serverInfo localInfo:(nonnull NSDictionary *)localInfo
 {
     self = [super init];
@@ -25,9 +57,22 @@
 
 - (void)loadADWithInfo:(nonnull NSDictionary *)serverInfo localInfo:(nonnull NSDictionary *)localInfo completion:(nonnull void (^)(NSArray<NSDictionary *> * _Nonnull, NSError * _Nonnull))completion
 {
+    NSString *bidId = serverInfo[kATAdapterCustomInfoBuyeruIdKey];
+    NSString *pid = serverInfo[@"slot_id"];
+    if(bidId && pid)
+    {
+        ATAdCustomEvent *event = [[CartyTopOnC2SManager sharedInstance] getEvent:pid];
+        if([event isKindOfClass:[CartyTopOnAppOpenEvent class]])
+        {
+            self.appOpenEvent = (CartyTopOnAppOpenEvent *)event;
+            self.appOpenEvent.requestCompletionBlock = completion;
+            [self.appOpenEvent trackSplashAdLoaded:self.appOpenEvent.bidInfo.customObject adExtra:nil];
+        }
+        [[CartyTopOnC2SManager sharedInstance] removeEvent:pid];
+        return;
+    }
     self.appOpenEvent = [[CartyTopOnAppOpenEvent alloc] initWithInfo:serverInfo localInfo:localInfo];
     self.appOpenEvent.requestCompletionBlock = completion;
-    NSString *pid = serverInfo[@"slot_id"];
     if(pid == nil)
     {
         NSError *error = [NSError errorWithDomain:@"CartyTopOnAdapter" code:400 userInfo:@{NSLocalizedDescriptionKey:@"not pid"}];

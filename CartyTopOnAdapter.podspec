@@ -1,6 +1,6 @@
 Pod::Spec.new do |spec|
   spec.name         = "CartyTopOnAdapter"
-  spec.version      = "1.1.0"
+  spec.version      = "1.2.0"
   spec.summary      = "CartyTopOnAdapter"
   spec.description  = <<-DESC
              CartyTopOnAdapter for iOS. 
@@ -14,7 +14,7 @@ Pod::Spec.new do |spec|
   spec.pod_target_xcconfig = {
     'OTHER_LDFLAGS' => '-ObjC'
   }
-  spec.dependency 'CartySDK','>= 1.0.0'
+  spec.dependency 'CartySDK','>= 1.1.0'
   spec.static_framework = true
   spec.default_subspecs = 'CartyTopOnAdapter'
 

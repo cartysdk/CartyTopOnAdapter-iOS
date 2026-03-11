@@ -40,11 +40,23 @@
     [self.interstitialAd showAd:viewController];
 }
 
-- (void)CTInterstitialAdDidLoad:(nonnull CTInterstitialAd *)ad
+//C2S win or loss
+- (void)didReceiveBidResult:(ATBidWinLossResult *)result
 {
-    [self.adStatusBridge atOnInterstitialAdLoadedExtra:nil];
+    
 }
 
+- (void)CTInterstitialAdDidLoad:(nonnull CTInterstitialAd *)ad
+{
+    NSMutableDictionary *extra = nil;
+    if (self.adStatusBridge.adapterLoadType == ATAdapterLoadTypeC2S)
+    {
+        extra = [[NSMutableDictionary alloc] init];
+        extra[ATAdSendC2SBidPriceKey] = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        extra[ATAdSendC2SCurrencyTypeKey] = @(ATBiddingCurrencyTypeUS);
+    }
+    [self.adStatusBridge atOnInterstitialAdLoadedExtra:extra];
+}
 
 - (void)CTInterstitialAdLoadFail:(nonnull CTInterstitialAd *)ad withError:(nonnull NSError *)error
 {

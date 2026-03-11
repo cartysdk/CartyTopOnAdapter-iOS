@@ -72,9 +72,22 @@
     });
 }
 
+//C2S win or loss
+- (void)didReceiveBidResult:(ATBidWinLossResult *)result
+{
+    
+}
+
 - (void)CTBannerAdDidLoad:(nonnull CTBannerAd *)ad
 {
-    [self.adStatusBridge atOnBannerAdLoadedWithView:ad adExtra:nil];
+    NSMutableDictionary *extra = nil;
+    if (self.adStatusBridge.adapterLoadType == ATAdapterLoadTypeC2S)
+    {
+        extra = [[NSMutableDictionary alloc] init];
+        extra[ATAdSendC2SBidPriceKey] = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        extra[ATAdSendC2SCurrencyTypeKey] = @(ATBiddingCurrencyTypeUS);
+    }
+    [self.adStatusBridge atOnBannerAdLoadedWithView:ad adExtra:extra];
 }
 
 - (void)CTBannerAdLoadFail:(nonnull CTBannerAd *)ad withError:(nonnull NSError *)error

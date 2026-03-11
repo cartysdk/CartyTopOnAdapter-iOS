@@ -1,5 +1,6 @@
 
 #import "CartyTopOnRewardedEvent.h"
+#import "CartyTopOnC2SManager.h"
 
 @interface CartyTopOnRewardedEvent()
 
@@ -10,18 +11,36 @@
 
 - (void)CTRewardedVideoAdDidLoad:(nonnull CTRewardedVideoAd *)ad
 {
+    if(self.isC2SBiding)
+    {
+        self.bidInfo.price = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        if(self.bidCompletion)
+        {
+            self.bidCompletion(self.bidInfo,nil);
+        }
+        return;
+    }
     [self trackRewardedVideoAdLoaded:ad adExtra:nil];;
+}
+
+- (void)CTRewardedVideoAdLoadFail:(nonnull CTRewardedVideoAd *)ad withError:(nonnull NSError *)error
+{
+    if(self.isC2SBiding)
+    {
+        if(self.bidCompletion)
+        {
+            self.bidCompletion(nil,error);
+        }
+        [[CartyTopOnC2SManager sharedInstance] removeEvent:ad.placementid];
+        return;
+    }
+    [self trackRewardedVideoAdLoadFailed:error];
 }
 
 - (void)CTRewardedVideoAdDidShow:(nonnull CTRewardedVideoAd *)ad
 {
     [self trackRewardedVideoAdShow];
     [self trackRewardedVideoAdVideoStart];
-}
-
-- (void)CTRewardedVideoAdLoadFail:(nonnull CTRewardedVideoAd *)ad withError:(nonnull NSError *)error
-{
-    [self trackRewardedVideoAdLoadFailed:error];
 }
 
 - (void)CTRewardedVideoAdShowFail:(nonnull CTRewardedVideoAd *)ad withError:(nonnull NSError *)error

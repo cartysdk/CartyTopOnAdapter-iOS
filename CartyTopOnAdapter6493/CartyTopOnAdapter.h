@@ -1,6 +1,7 @@
 
 #import <Foundation/Foundation.h>
 #import <CartySDK/CartySDK.h>
+#import "CartyTopOnC2SManager.h"
 
 NS_ASSUME_NONNULL_BEGIN
 

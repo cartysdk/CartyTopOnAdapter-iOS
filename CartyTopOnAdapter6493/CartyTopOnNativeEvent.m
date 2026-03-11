@@ -1,10 +1,20 @@
 
 #import "CartyTopOnNativeEvent.h"
+#import "CartyTopOnC2SManager.h"
 
 @implementation CartyTopOnNativeEvent
 
 - (void)CTNativeAdDidLoad:(nonnull CTNativeAd *)ad
 {
+    if(self.isC2SBiding)
+    {
+        self.bidInfo.price = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        if(self.bidCompletion)
+        {
+            self.bidCompletion(self.bidInfo,nil);
+        }
+        return;
+    }
     NSMutableDictionary *asset = [[NSMutableDictionary alloc] init];
     if(ad.isTemplate)
     {
@@ -27,6 +37,15 @@
 
 - (void)CTNativeAdLoadFail:(nonnull CTNativeAd *)ad withError:(nonnull NSError *)error
 {
+    if(self.isC2SBiding)
+    {
+        if(self.bidCompletion)
+        {
+            self.bidCompletion(nil,error);
+        }
+        [[CartyTopOnC2SManager sharedInstance] removeEvent:ad.placementid];
+        return;
+    }
     [self trackNativeAdLoadFailed:error];
 }
 

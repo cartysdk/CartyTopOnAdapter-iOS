@@ -38,10 +38,22 @@
     [self.appOpenAd showAd:window.rootViewController];
 }
 
+//C2S win or loss
+- (void)didReceiveBidResult:(ATBidWinLossResult *)result
+{
+    
+}
 
 - (void)CTOpenAdDidLoad:(nonnull CTAppOpenAd *)ad
 {
-    [self.adStatusBridge atOnSplashAdLoadedExtra:nil];
+    NSMutableDictionary *extra = nil;
+    if (self.adStatusBridge.adapterLoadType == ATAdapterLoadTypeC2S)
+    {
+        extra = [[NSMutableDictionary alloc] init];
+        extra[ATAdSendC2SBidPriceKey] = [NSString stringWithFormat:@"%lf",ad.ecpm];
+        extra[ATAdSendC2SCurrencyTypeKey] = @(ATBiddingCurrencyTypeUS);
+    }
+    [self.adStatusBridge atOnSplashAdLoadedExtra:extra];
 }
 
 - (void)CTOpenAdLoadFail:(nonnull CTAppOpenAd *)ad withError:(nonnull NSError *)error
