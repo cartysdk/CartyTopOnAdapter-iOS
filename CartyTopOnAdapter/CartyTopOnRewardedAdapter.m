@@ -50,7 +50,14 @@
 //C2S win or loss
 - (void)didReceiveBidResult:(ATBidWinLossResult *)result
 {
-    
+    if(result.bidResultType == ATBidWinLossResultTypeWin)
+    {
+        [self.rewardedVideoAd bidWin:result.secondPrice];
+    }
+    else
+    {
+        [self.rewardedVideoAd bidLoss:result.winPrice];
+    }
 }
 
 - (void)CTRewardedVideoAdDidLoad:(nonnull CTRewardedVideoAd *)ad

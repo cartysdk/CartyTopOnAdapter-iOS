@@ -45,6 +45,24 @@
     [[CartyTopOnC2SManager sharedInstance] addEvent:cartyTopOnAppOpenEvent placementid:pid];
 }
 
++ (void)sendWinnerNotifyWithCustomObject:(id)customObject secondPrice:(NSString*)price userInfo:(NSDictionary<NSString *, NSString *> *)userInfo
+{
+    if([customObject isKindOfClass:[CTAppOpenAd class]])
+    {
+        CTAppOpenAd *appOpenAd = (CTAppOpenAd *)customObject;
+        [appOpenAd bidWin:price];
+    }
+}
+
++ (void)sendLossNotifyWithCustomObject:(nonnull id)customObject lossType:(ATBiddingLossType)lossType winPrice:(nonnull NSString *)price userInfo:(NSDictionary *)userInfo
+{
+    if([customObject isKindOfClass:[CTAppOpenAd class]])
+    {
+        CTAppOpenAd *appOpenAd = (CTAppOpenAd *)customObject;
+        [appOpenAd bidLoss:price];
+    }
+}
+
 - (nonnull instancetype)initWithNetworkCustomInfo:(nonnull NSDictionary *)serverInfo localInfo:(nonnull NSDictionary *)localInfo
 {
     self = [super init];

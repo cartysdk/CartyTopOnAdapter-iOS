@@ -43,7 +43,14 @@
 //C2S win or loss
 - (void)didReceiveBidResult:(ATBidWinLossResult *)result
 {
-    
+    if(result.bidResultType == ATBidWinLossResultTypeWin)
+    {
+        [self.interstitialAd bidWin:result.secondPrice];
+    }
+    else
+    {
+        [self.interstitialAd bidLoss:result.winPrice];
+    }
 }
 
 - (void)CTInterstitialAdDidLoad:(nonnull CTInterstitialAd *)ad

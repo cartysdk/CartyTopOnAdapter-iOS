@@ -41,7 +41,14 @@
 //C2S win or loss
 - (void)didReceiveBidResult:(ATBidWinLossResult *)result
 {
-    
+    if(result.bidResultType == ATBidWinLossResultTypeWin)
+    {
+        [self.appOpenAd bidWin:result.secondPrice];
+    }
+    else
+    {
+        [self.appOpenAd bidLoss:result.winPrice];
+    }
 }
 
 - (void)CTOpenAdDidLoad:(nonnull CTAppOpenAd *)ad

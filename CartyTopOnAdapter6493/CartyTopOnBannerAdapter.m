@@ -85,6 +85,24 @@
     });
 }
 
++ (void)sendWinnerNotifyWithCustomObject:(id)customObject secondPrice:(NSString*)price userInfo:(NSDictionary<NSString *, NSString *> *)userInfo
+{
+    if([customObject isKindOfClass:[CTBannerAd class]])
+    {
+        CTBannerAd *bannerAd = (CTBannerAd *)customObject;
+        [bannerAd bidWin:price];
+    }
+}
+
++ (void)sendLossNotifyWithCustomObject:(nonnull id)customObject lossType:(ATBiddingLossType)lossType winPrice:(nonnull NSString *)price userInfo:(NSDictionary *)userInfo
+{
+    if([customObject isKindOfClass:[CTBannerAd class]])
+    {
+        CTBannerAd *bannerAd = (CTBannerAd *)customObject;
+        [bannerAd bidLoss:price];
+    }
+}
+
 - (nonnull instancetype)initWithNetworkCustomInfo:(nonnull NSDictionary *)serverInfo localInfo:(nonnull NSDictionary *)localInfo
 {
     self = [super init];
