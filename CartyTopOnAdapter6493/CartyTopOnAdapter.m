@@ -15,7 +15,7 @@
     dispatch_once(&onceToken, ^{
         if([ATAPI sharedInstance].dataConsentSet != ATDataConsentSetUnknown)
         {
-            [[CartyADSDK sharedInstance] setCOPPAStatus:([ATAPI sharedInstance].dataConsentSet == ATDataConsentSetPersonalized)];
+            [[CartyADSDK sharedInstance] setGDPRStatus:([ATAPI sharedInstance].dataConsentSet == ATDataConsentSetPersonalized)];
         };
         [[CartyADSDK sharedInstance] setCOPPAStatus:[ATAppSettingManager sharedManager].complyWithCOPPA];
         [[CartyADSDK sharedInstance] setDoNotSell:![ATAppSettingManager sharedManager].complyWithCCPA];

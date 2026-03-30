@@ -14,10 +14,10 @@
     NSString *appid = adInitArgument.serverContentDic[@"appid"];
     if([ATAPI sharedInstance].dataConsentSet != ATDataConsentSetUnknown)
     {
-        [[CartyADSDK sharedInstance] setCOPPAStatus:([ATAPI sharedInstance].dataConsentSet == ATDataConsentSetPersonalized)];
+        [[CartyADSDK sharedInstance] setGDPRStatus:([ATAPI sharedInstance].dataConsentSet == ATDataConsentSetPersonalized)];
     };
-    [[CartyADSDK sharedInstance] setCOPPAStatus:[ATAppSettingManager sharedManager].complyWithCOPPA];
-    [[CartyADSDK sharedInstance] setDoNotSell:![ATAppSettingManager sharedManager].complyWithCCPA];
+    [[CartyADSDK sharedInstance] setCOPPAStatus:adInitArgument.complyWithCOPPA];
+    [[CartyADSDK sharedInstance] setDoNotSell:!adInitArgument.complyWithCCPA];
     [CartyADSDK sharedInstance].mediation = @"TopOn";
     [[CartyADSDK sharedInstance] start:appid completion:^{
         [self notificationNetworkInitSuccess];
